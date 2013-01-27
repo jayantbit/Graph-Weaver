@@ -1,0 +1,3443 @@
+#include<iostream.h>
+#include<conio.h>
+#include<Math.h>
+#include<graphics.h>
+#include<stdlib.h>
+#include<stdio.h>
+#include<process.h>
+#include<string.h>
+#include<fstream.h>
+#include<dos.h>
+void print2(char);
+void setkey(int);
+void upper(int);
+void comment();
+void stat();
+void wait(void);
+void open(int);
+void change();
+void print(int);
+void bar(int,int,int,int,int);
+void trig2();
+void clr(int,int);
+void display(int,int);
+void display2(int);
+void display4(int);
+void retracecir2();
+void graph(int,int,int);
+void retrace3();
+void retracecir1();
+void parabola(int,int,int);
+void retracepara();
+void retraceparaver();
+void display3(int);
+void ellipse1(int,int,int,int,int);
+void retraceellip1();
+void win(int x,int col,int d)
+{window(x,1,x,25);
+textcolor(WHITE);
+   textbackground(col+3);
+  cprintf("                                                                 \r\n");
+delay(d);
+}
+
+
+void make(int d)
+{for(int x=42;x<84;x+=1)
+{ win(x,x,d); win(84-x,x,d);}}
+
+void close()
+{make(30);getch();exit(0);}
+
+
+int scale=9;
+char key[5]={'g','v','h','f','b'};
+int cc1=14,cc2=2,cc3=15,cc4=14,cc5=2;
+int g1=4,g2=15;
+int c[7]={5,6,7,2,4,4,0};
+void bar(int y,int c,int l,int m,int flag)
+{gotoxy(m,y);
+textcolor(0);
+textbackground(0);
+for(int g=0;g<7;g++)
+cprintf(" ");
+textcolor(c);
+textbackground(c);
+
+for(int x=7;x<l;x++)
+cprintf(" ");
+if(flag==1)
+{textcolor(c);
+textbackground(c);
+cout<<(int)l/2;}
+}
+void bar2(int x,int c,int l,int t)
+{
+int g;
+for(int y=6;y<l;y++)
+{gotoxy(x,y);
+textcolor(c);
+textbackground(c);
+for( g=0;g<t;g++)
+cprintf(" ");
+}
+}
+
+void bar3(int x,int y,int c,int l)
+{
+gotoxy(x,y+1);
+textcolor(c);
+textbackground(c);
+for(int g=0;g<l;g++)
+cprintf(" ");
+}
+
+void graph(double,double,double);
+void retrace3();
+class enter
+{ double coff[3];
+public:
+void inz()
+{coff[0]=1;
+coff[1]=0;
+coff[2]=-16;
+}
+void clr(int,int);
+};
+ void enter :: clr(int x,int y)
+{gotoxy(x,y);
+cout<<" ";
+
+int pos[]={2,28,45,70};
+char ch;
+for(int z=0;z<4;z++)
+if(pos[z]==x)
+break;
+if(z==3)
+z=0;
+else z+=1;
+gotoxy(pos[z],y);
+cout<<".";
+st:
+ch=getch();
+if(ch==key[0])
+clr(pos[z],2);
+else if(ch==key[2]&& z!=3)
+{cin>>coff[z];goto st;}
+else if(ch==key[2]&& z==3)
+{graph(coff[0],coff[1],coff[2]);
+ retrace3();
+ goto st;
+}
+else if(ch==key[4])
+{closegraph();
+display(2,0);}
+
+
+else goto st;
+}
+
+void graph(double p,double q,double r)
+{
+ double dis=q*q -4*p*r;int r1=0,r2=0;
+ if(dis>=0)
+ {dis=sqrt(dis);
+  r1=(-q+dis)/2*p;
+  r2=(-q-dis)/2*p;
+  }
+ int gdriver = DETECT, gmode, errorcode;
+   int midx, midy;
+   initgraph(&gdriver, &gmode, "");
+
+
+   midx = getmaxx() / 2 ;
+   midy = getmaxy() / 2;
+
+   setcolor(g1);
+   setbkcolor(g2);
+    line(midx, midy,midx, midy-200);
+  line(midx, midy,midx+400, midy);
+for(float t=midx;t<midx+400;t+=15*scale/9)
+circle(t,midy,1);
+for( t=midy;t>midy-200;t-=15*scale/9)
+circle(midx,t,1);
+line(midx, midy,midx, midy+200);
+  line(midx, midy,midx-400, midy);
+for( t=midx;t>midx-400;t-=15*scale/9)
+circle(t,midy,1);
+for( t=midy;t<midy+200;t+=15*scale/9)
+circle(midx,t,1);
+cout<<"\t\t\t\t\t\t\t"<<p<<"\t"<<q<<"\t"<<r<<"\n";
+int j,k,a=midx,b=midy;
+for(float x=0;x<=15;x+=1)
+{int y=(p*pow(x,2)+q*x +r);
+j=midx+(x*15*scale/9);
+k=midy-(y*2*scale/9);
+line(a,b,j,k);
+//putpixel(j,k,4);
+a=j;b=k;}
+a=midx,b=midy;
+
+for( x=0;x>=-15;x-=1)
+{int y=(p*pow(x,2)+q*x +r);
+j=midx+(x*15*scale/9);
+k=midy-(y*2*scale/9);
+line(a,b,j,k);
+//putpixel(j,k,4);
+a=j;b=k;}
+setcolor(4);
+if(r1!=0 && r2!=0 && scale==9)
+{
+gotoxy(40+2*r1,15);
+cout<<r1;
+gotoxy(40+2*r2,15);
+cout<<r2;
+
+}
+setcolor(2);
+getch();
+}
+
+void quad()
+{ int gdriver = DETECT, gmode, errorcode;
+   int midx, midy;
+   initgraph(&gdriver, &gmode, "");
+
+   setcolor(2);
+   line(midx, midy,midx, midy-300);
+   line(midx, midy,midx+400, midy);
+for(int t=midx;t<midx+400;t+=15)
+circle(t,midy,1);
+
+int y=0,i;
+char msg[80];
+
+      i=5;
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i);
+      sprintf(msg, "(  )x  +x(  ) + (  ) =0", i);
+      outtextxy(1, y, msg);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, 1);
+       textcolor(4);
+	outtextxy(90, 1, "2");
+       settextstyle(TRIPLEX_FONT, HORIZ_DIR, i-1);
+       outtextxy(580, y, "GO");
+
+char ch;
+enter ob;
+ob.inz();
+gotoxy(70,2);
+textcolor(2);
+cout<<".";
+st2:
+ch=getch();
+if(ch==key[0])
+ob.clr(70,2);
+else if(ch==key[4])
+{closegraph();display(2,0);}
+else goto st2;
+getch();
+}
+
+void retrace3()
+{int y=0,i;
+char msg[80];
+
+      i=5;
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i);
+      sprintf(msg, "(  )x  +x(  ) + (  ) =0", i);
+      outtextxy(1, y, msg);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, 1);
+       textcolor(4);
+	outtextxy(90, 1, "2");
+       settextstyle(TRIPLEX_FONT, HORIZ_DIR, i-1);
+       outtextxy(580, y, "GO");
+ }
+
+void graph2(double,double,double);
+void retracecir1();
+class enter2
+{ double coff[3];
+public:
+void inz()
+{coff[0]=0;
+coff[1]=0;
+coff[2]=1;
+}
+void clr(int,int);
+};
+
+ void enter2 :: clr(int x,int y)
+{gotoxy(x,y);
+cout<<" ";
+
+
+int pos[]={8,26,40,73};
+char ch;
+for(int z=0;z<4;z++)
+if(pos[z]==x)
+break;
+if(z==3)
+z=0;
+else z+=1;
+gotoxy(pos[z],y);
+cout<<".";
+st:
+ch=getch();
+if(ch==key[0])
+clr(pos[z],2);
+else if(ch==key[2]&& z!=3)
+{//gotoxy(pos[z],y);
+cin>>coff[z];goto st;}
+else if(ch==key[2]&& z==3)
+{
+
+graph2(coff[0],coff[1],coff[2]);
+ retracecir1();
+ goto st;
+}
+else if(ch==key[4])
+{closegraph();
+display(2,0);}
+
+else goto st;
+}
+
+void graph2(double g,double f,double r)
+{
+ g*=-1;
+
+ int gdriver = DETECT, gmode, errorcode;
+   int midx, midy;
+   initgraph(&gdriver, &gmode, "");
+
+   gotoxy(getmaxx()-2,0);
+//   cout<<"\t\t\t\t\t\t\t\t"<<g*-1<<"\t"<<f<<"\t"<<r;
+   midx = getmaxx() / 2;
+   midy = getmaxy() / 2;
+int midx2=midx - 15*g;
+int midy2=midy- 15*f;
+    setcolor(g1);
+   setbkcolor(g2);
+   line(midx, midy,midx, midy-200);
+  line(midx, midy,midx+400, midy);
+for(float t=midx;t<midx+400;t+=15)
+circle(t,midy,1);
+
+for( t=midy;t>midy-200;t-=15)
+circle(midx,t,1);
+line(midx, midy,midx, midy+200);
+  line(midx, midy,midx-400, midy);
+for( t=midx;t>midx-400;t-=15)
+circle(t,midy,1);
+
+for( t=midy;t<midy+200;t+=15)
+circle(midx,t,1);
+
+cout<<"\t\t\t\t\t\t\t"<<-1*g<<"\t"<<f<<"\t"<<r<<"\n";
+int f2=-1*f;
+double xc1=pow(r,2)-pow(f2,2),xc2=pow(r,2)-pow(g,2);
+if(xc1>0)
+xc1=sqrt(xc1);
+if(xc2>0)
+xc2=sqrt(xc2);
+
+double p1=g+xc1,p2=g-xc1,p3=f+xc2,p4=f-xc2;
+int j,k,a=midx2,b=midy2;
+r*=1;
+//r=sqrt(r);
+float e=.001;
+float q=15,w=15;
+for(float x=0;x<=15;x+=e)
+{double y=pow(r,2)-pow(x,2);
+  if(y<0)
+  break;
+  y=sqrt(y);
+j=midx2+(x*q);
+k=midy2-(y*w);
+line(a,b,j,k);
+//putpixel(j,k,4);
+a=j;b=k;}
+
+a=midx2,b=midy2;
+for( x=0;x<=15;x+=e)
+{double y=pow(r,2)-pow(x,2);
+  if(y<0)
+  break;
+  y=sqrt(y);
+j=midx2-(x*q);
+k=midy2-(y*w);
+line(a,b,j,k);
+//putpixel(j,k,4);
+a=j;b=k;}
+a=midx2,b=midy2;
+for( x=0;x<=15;x+=e)
+{double y=pow(r,2)-pow(x,2);
+  if(y<0)
+  break;
+  y=sqrt(y);
+j=midx2+(x*q);
+k=midy2+(y*w);
+line(a,b,j,k);
+//putpixel(j,k,4);
+a=j;b=k;}
+a=midx2,b=midy2;
+for( x=0;x<=15;x+=e)
+{double y=pow(r,2)-pow(x,2);
+  if(y<0)
+  break;
+  y=sqrt(y);
+j=midx2-(x*q);
+k=midy2+(y*w);
+line(a,b,j,k);
+//putpixel(j,k,4);
+a=j;b=k;
+setcolor(0);
+line(midx2,midy2+15*r,midx2,midy2-15*r);
+setcolor(2);
+}
+gotoxy(40-2*g,15-f);
+cout<<-1*g<<","<<f;
+gotoxy(40-2*p1,15);
+cout<<-(int)p1;
+gotoxy(40-2*p2,15);
+cout<<-(int)p2;
+gotoxy(40,15-p3+1);
+cout<<(int)p3;
+gotoxy(40,15-p4);
+cout<<(int)p4;
+
+getch();
+ line(midx, midy,midx, midy-200);
+  line(midx, midy,midx+400, midy);
+for( t=midx;t<midx+400;t+=15)
+circle(t,midy,1);
+
+for( t=midy;t>midy-200;t-=15)
+circle(midx,t,1);
+line(midx, midy,midx, midy+200);
+  line(midx, midy,midx-400, midy);
+for( t=midx;t>midx-400;t-=15)
+circle(t,midy,1);
+
+for( t=midy;t<midy+200;t+=15)
+circle(midx,t,1);
+
+
+}
+void circle()
+{ int gdrimidxer = DETECT, gmode, errorcode;
+   int midx, midy;
+   initgraph(&gdrimidxer, &gmode, "");
+
+   setcolor(2);
+   line(midx, midy,midx, midy-300);
+   line(midx, midy,midx+400, midy);
+for(int t=midx;t<midx+400;t+=15)
+circle(t,midy,1);
+
+int y=0,i;
+char msg[80];
+
+      i=4;
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i);
+      sprintf(msg, "[x-h] + [y-k]  = (r )\n\n\n\n", i);
+      sprintf(msg, "[x-( )] + [y-( )]  = ( )", i);
+      outtextxy(1, y, msg);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, 1);
+       textcolor(4);
+	outtextxy(95, 1, "2");
+       outtextxy(235, 1, "2");
+       outtextxy(340, 1, "2");
+       settextstyle(TRIPLEX_FONT, HORIZ_DIR, i-1);
+       outtextxy(610, y, "GO");
+char ch;
+enter2 ob;
+ob.inz();
+
+gotoxy(73,2);
+textcolor(2);
+cout<<".";
+st:
+ch=getch();
+if(ch==key[0])
+ob.clr(73,2);
+else if(ch==key[4])
+{closegraph();display(2,0);}
+else goto st;
+getch();
+}
+void retracecir1()
+{ gotoxy(0,0);
+cout<<"                       ";
+gotoxy(0,2);
+int i=4,y=2;
+settextstyle(TRIPLEX_FONT, HORIZ_DIR, i);
+      char msg[80];
+      sprintf(msg, "[x-h] + [y-k]  = (r )\n\n\n\n", i);
+      sprintf(msg, "[x-( )] + [y-( )]  = ( )", i);
+      outtextxy(1, y, msg);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, 1);
+       textcolor(4);
+	outtextxy(95, 1, "2");
+       outtextxy(235, 1, "2");
+       outtextxy(340, 1, "2");
+       settextstyle(TRIPLEX_FONT, HORIZ_DIR, i-1);
+       outtextxy(610, y, "GO");
+ }
+
+void retracecir2();
+class entercir2
+{ double coff[5];
+public:
+void inz()
+{coff[0]=1;
+coff[1]=1;
+coff[2]=0;
+coff[3]=0;
+coff[4]=-4;
+}
+void clr(int,int);
+};
+
+ void entercir2 :: clr(int x,int y)
+{gotoxy(x,y);
+cout<<" ";
+
+int pos[]={4,24,38,49,60,73};
+char ch;
+for(int z=0;z<6;z++)
+if(pos[z]==x)
+break;
+if(z==5)
+z=0;
+else z+=1;
+gotoxy(pos[z],y);
+cout<<".";
+double op1,op2,op3,op4,op5;
+st:
+ch=getch();
+if(ch==key[0])
+clr(pos[z],2);
+else if(ch==key[2]&& z!=5)
+{cin>>coff[z];goto st;}
+else if(ch==key[2]&& z==5)
+{ op3=coff[2]/coff[0];
+op4=coff[3]/coff[0];
+op5=coff[4]/coff[0];
+
+op1=-(op3/2);
+op2=-(op4/2);
+double l;
+if(op1 && op2)
+l=pow(op1,2)+pow(op2,2) -op5;
+else
+l=-1*(op5);
+l=sqrt(l);
+graph2(op1,op2,l);
+ retracecir2();
+ goto st;
+}
+else if(ch==key[4])
+{closegraph();
+display(2,0);}
+else goto st;
+
+}
+
+void circle2()
+{ int gdrimidxer = DETECT, gmode, errorcode;
+   int midx, midy;
+   initgraph(&gdrimidxer, &gmode, "");
+
+    setcolor(g1);
+   setbkcolor(g2);
+   line(midx, midy,midx, midy-300);
+   line(midx, midy,midx+400, midy);
+for(int t=midx;t<midx+400;t+=15)
+circle(t,midy,1);
+
+int y=0,i;
+char msg[80];
+
+      i=4;
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i);
+      sprintf(msg, "(  )x  +y (  ) + x(  )+y(  ) +(  ) =0", i);
+      outtextxy(1, y, msg);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, 1);
+       textcolor(4);
+	outtextxy(75, 1, "2");
+       outtextxy(145, 1, "2");
+       settextstyle(TRIPLEX_FONT, HORIZ_DIR, i-1);
+       outtextxy(610, y, "GO");
+
+char ch;
+entercir2 ob;
+ob.inz();
+
+gotoxy(73,2);
+textcolor(2);
+cout<<".";
+cout<<".";
+st:
+ch=getch();
+if(ch==key[0])
+ob.clr(73,2);
+else if(ch==key[4])
+{closegraph();
+display(2,0);}
+else goto st;
+getch();
+}
+
+void retracecir2()
+{int y=0,i;
+char msg[80];
+
+      i=4;
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i);
+      sprintf(msg, "(  )x  +y (  ) + x(  )+y(  ) +(  ) =0", i);
+      outtextxy(1, y, msg);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, 1);
+       textcolor(4);
+	outtextxy(75, 1, "2");
+       outtextxy(145, 1, "2");
+       settextstyle(TRIPLEX_FONT, HORIZ_DIR, i-1);
+       outtextxy(610, y, "GO");
+}
+
+void parabola(double,double,double);
+void retracepara();
+class enterpara
+{ double coff[3];
+public:
+void inz()
+{coff[0]=0;
+coff[1]=1;
+coff[2]=0;
+}
+void clr(int,int);
+};
+
+void enterpara :: clr(int x,int y)
+{gotoxy(x,y);
+cout<<" ";
+
+int pos[]={10,28,40,70};
+char ch;
+for(int z=0;z<4;z++)
+if(pos[z]==x)
+break;
+if(z==3)
+z=0;
+else z+=1;
+gotoxy(pos[z],y);
+cout<<".";
+st:
+ch=getch();
+if(ch==key[0])
+clr(pos[z],2);
+else if(ch==key[2]&& z!=3)
+{cin>>coff[z];goto st;}
+else if(ch==key[2]&& z==3)
+{parabola(coff[2],coff[0],coff[1]);
+ retracepara();
+ goto st;
+}
+else if(ch==key[4])
+{closegraph();
+display(2,0);}
+
+else goto st;
+}
+void parabola(double m,double n,double d)
+{
+int gdriver = DETECT, gmode, errorcode;
+   int midx, midy;
+   initgraph(&gdriver, &gmode, "");
+
+   double xc1=-d*m;
+
+   int p1=0,p2=0;
+   gotoxy(0,0);
+   if(xc1>=0)
+  { xc1=sqrt(xc1);p1=n+xc1,p2=n-xc1;}
+   gotoxy(getmaxx()-2,0);
+//   cout<<"\t\t\t\t\t\t\t\t"<<m<<"\t"<<n<<"\t"<<d;
+   midx = getmaxx() / 2;
+   midy = getmaxy() / 2;
+   setcolor(g1);
+   setbkcolor(g2);
+  if(p1)
+  {gotoxy(40,15-p1);
+  textcolor(2);
+  cout<<p1;}
+  if(p2)
+ { gotoxy(40,15-p2);
+  cout<<(int)p2;}
+
+   gotoxy(getmaxx()-2,0);
+   //cout<<"\t\t\t\t\t\t\t\t"<<p<<"\t"<<q<<"\t"<<r;
+   midx = getmaxx() / 2;
+   midy = getmaxy() / 2;
+int midx2=midx;
+int midy2=midy;
+   line(midx, midy,midx, midy-200);
+  line(midx, midy,midx+400, midy);
+for(float t=midx;t<midx+400;t+=15)
+circle(t,midy,1);
+for( t=midy;t>midy-200;t-=15)
+circle(midx,t,1);
+line(midx, midy,midx, midy+200);
+  line(midx, midy,midx-400, midy);
+for( t=midx;t>midx-400;t-=15)
+circle(t,midy,1);
+for( t=midy;t<midy+200;t+=15)
+circle(midx,t,1);
+
+
+int j,k,a=midx2,b=midy2;
+float e=.001;
+float w=15,q=15;
+//int m=-5,n=2,d=4;
+for(float x=m;x<=15;x+=e)
+{double y=d*(x-m);
+  if(y<0)
+  break;
+  y=sqrt(y)+n;
+j=midx2+(x*q);
+k=midy2-(y*w);
+line(a,b,j,k);
+a=j;b=k;}
+a=midx2,b=midy2;
+for( x=m;x<=15;x+=e)
+{double y=d*(x-m);
+  if(y<0)
+  break;
+  y=sqrt(y)-n;
+j=midx2+(x*q);
+k=midy2+(y*w);
+line(a,b,j,k);
+a=j;b=k;}
+setcolor(0);
+line(midx,midy,midx+m*15,midy-n*15);
+gotoxy(41+2*m,15-n);
+cout<<m<<","<<n;
+getch();
+ retracepara();
+}
+
+void para1()
+{
+int y=0,i;
+char msg[100];
+
+      int gdriver = DETECT, gmode, errorcode;
+   int midx, midy;
+   initgraph(&gdriver, &gmode, "");
+
+      i=5;
+      setcolor(2);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i);
+      sprintf(msg, "[y-( )] =4( )[x-( )]", i);
+      outtextxy(1, y, msg);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, 1);
+       textcolor(4);
+	outtextxy(110, 1, "2");
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i-1);
+      outtextxy(580, y, "GO");
+
+char ch;
+enterpara ob;
+ob.inz();
+gotoxy(70,2);
+textcolor(2);
+cout<<".";
+st:
+ch=getch();
+if(ch==key[0])
+ob.clr(70,2);
+else if(ch==key[4])
+{closegraph();
+display(2,0);}
+
+else goto st;
+getch();
+}
+void retracepara()
+
+{
+//int gdriver = DETECT, gmode, errorcode;
+  int midx, midy;
+  // initgraph(&gdriver, &gmode, "");
+
+int y=0,i=5;
+char msg[100];
+setcolor(2);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i);
+      sprintf(msg, "[y-( )] =4( )[x-( )]", i);
+      outtextxy(1, y, msg);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, 1);
+       textcolor(4);
+	outtextxy(110, 1, "2");
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i-1);
+      outtextxy(580, y, "GO");
+}
+void parabolaver(double,double,double);
+void retraceparaver();
+class enterparaver
+{ double coff[3];
+public:
+void inz()
+{coff[0]=0;
+coff[1]=1;
+coff[2]=0;
+}
+ void clr(int,int);
+ };
+
+void  enterparaver :: clr(int x,int y)
+{gotoxy(x,y);
+cout<<" ";
+
+int pos[]={10,28,40,70};
+char ch;
+for(int z=0;z<4;z++)
+if(pos[z]==x)
+break;
+if(z==3)
+z=0;
+else z+=1;
+gotoxy(pos[z],y);
+cout<<".";
+st:
+ch=getch();
+if(ch==key[0])
+clr(pos[z],2);
+else if(ch==key[2]&& z!=3)
+{cin>>coff[z];goto st;}
+else if(ch==key[2]&& z==3)
+{parabolaver(coff[0],coff[2],coff[1]);
+ retraceparaver();
+ goto st;
+}
+else if(ch==key[4])
+{closegraph();
+display(2,0);
+}
+else goto st;
+}
+
+void parabolaver(double m,double n,double d)
+{
+int gdriver = DETECT, gmode, errorcode;
+   int midx, midy;
+   initgraph(&gdriver, &gmode, "");
+
+   double xc1=-d*n;
+   gotoxy(40+2*m,15-n);
+cout<<m<<","<<n;
+
+   int p1=0,p2=0;
+   gotoxy(0,0);
+   if(xc1>=0)
+  { xc1=sqrt(xc1);p1=m+xc1,p2=m-xc1;}
+   gotoxy(getmaxx()-2,0);
+//   cout<<"\t\t\t\t\t\t\t\t"<<m<<"\t"<<n<<"\t"<<d;
+   midx = getmaxx() / 2;
+   midy = getmaxy() / 2;
+  if(p1)
+  {gotoxy(40+2*p1,15);
+  textcolor(2);
+  cout<<p1;}
+  if(p2)
+ { gotoxy(40+2*p2,15);
+  cout<<(int)p2;}
+
+int midx2=midx;
+int midy2=midy;
+    setcolor(g1);
+   setbkcolor(g2);
+   line(midx, midy,midx, midy-200);
+  line(midx, midy,midx+400, midy);
+for(float t=midx;t<midx+400;t+=15)
+circle(t,midy,1);
+for( t=midy;t>midy-200;t-=15)
+circle(midx,t,1);
+line(midx, midy,midx, midy+200);
+  line(midx, midy,midx-400, midy);
+for( t=midx;t>midx-400;t-=15)
+circle(t,midy,1);
+for( t=midy;t<midy+200;t+=15)
+circle(midx,t,1);
+
+
+int j,k,a=midx2,b=midy2;
+float e=.001;
+float w=15,q=15;
+//int m=-5,n=2,d=4;
+for(float x=m;x<=15;x+=e)
+{double y=pow((x-m),2)/d;
+  y+=n;
+j=midx2+(x*q);
+k=midy2-(y*w);
+line(a,b,j,k);
+a=j;b=k;}
+a=midx2,b=midy2;
+for( x=m-e/4;x>=-15;x-=e)
+{double y=pow((x-m),2)/d;
+  y+=n;
+j=midx2+(x*q);
+k=midy2-(y*w);
+line(a,b,j,k);
+a=j;b=k;}
+setcolor(0);
+line(midx,midy,midx+(m)*15,midy-(n)*15);
+line(midx,midy,midx+(m+e/4)*15,midy-(n)*15);
+line(midx,midy,midx+(m+e/4)*15,midy-(n+e/4)*15);
+line(midx,midy,midx+(m+e/4)*15,midy-(n-e/4)*15);
+line(midx,midy,midx+(m-e/4)*15,midy-(n)*15);
+line(midx,midy,midx+(m-e/4)*15,midy-(n+e/4)*15);
+line(midx,midy,midx+(m-e/4)*15,midy-(n-e/4)*15);
+
+
+getch();
+ //retraceparaver();
+}
+
+void para2()
+{
+int y=0,i;
+char msg[100];
+
+      int gdriver = DETECT, gmode, errorcode;
+   int midx, midy;
+   initgraph(&gdriver, &gmode, "");
+
+      i=5;
+      setcolor(2);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i);
+      sprintf(msg, "[x-( )] =4( )[y-( )]", i);
+      outtextxy(1, y, msg);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, 1);
+       textcolor(4);
+	outtextxy(110, 1, "2");
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i-1);
+      outtextxy(580, y, "GO");
+
+char ch;
+enterparaver ob;
+ob.inz();
+gotoxy(70,2);
+textcolor(2);
+cout<<".";
+st:
+ch=getch();
+if(ch==key[0])
+ob.clr(70,2);
+else if(ch==key[4])
+{closegraph();
+display(2,0);}
+else goto st;
+getch();
+}
+void retraceparaver()
+
+{
+//int gdriver = DETECT, gmode, errorcode;
+  int midx, midy;
+  // initgraph(&gdriver, &gmode, "");
+
+int y=0,i=5;
+char msg[100];
+setcolor(2);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i);
+      sprintf(msg, "[x-( )] =4( )[y-( )]", i);
+      outtextxy(1, y, msg);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, 1);
+       textcolor(4);
+	outtextxy(110, 1, "2");
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i-1);
+      outtextxy(580, y, "GO");
+}
+void ellipse1(double m,double n,double x1,double y1,int mm);
+void retraceellip1();
+class enterellip1
+{ double coff[4];
+int mn3;
+public:
+void inz(int p)
+{coff[0]=0;
+coff[1]=5;
+coff[2]=0;
+coff[3]=5;
+mn3=p;
+}
+void clr(int,int);
+};
+
+void enterellip1 :: clr(int x,int y)
+{gotoxy(x,y);
+cout<<" ";
+
+int pos[]={12,23,45,53,70};
+char ch;
+for(int z=0;z<5;z++)
+if(pos[z]==x)
+break;
+if(z==4)
+z=0;
+else z+=1;
+gotoxy(pos[z],y);
+cout<<".";
+st:
+ch=getch();
+if(ch==key[0])
+clr(pos[z],2);
+else if(ch==key[2]&& z!=4)
+{cin>>coff[z];goto st;}
+else if(ch==key[2]&& z==4)
+{ellipse1(coff[1],coff[3],coff[0],coff[2],mn3);
+ retraceellip1();
+ goto st;
+}
+else if(ch==key[4])
+{closegraph();
+display(2,0);}
+
+else goto st;
+}
+
+void ellipse1(double m,double n,double x1,double y1,int mm)
+{
+int gdriver = DETECT, gmode, errorcode;
+   int midx, midy;
+   initgraph(&gdriver, &gmode, "");
+
+   gotoxy(getmaxx()-2,0);
+   cout<<"\t\t\t\t\t\t\t\t"<<m<<"\t"<<n<<"\t"<<"\n";
+   midx = getmaxx() / 2;
+   midy = getmaxy() / 2;
+int midx2=midx+(x1*15);
+int midy2=midy-(y1*15);
+    setcolor(g1);
+   setbkcolor(g2);
+   line(midx, midy,midx, midy-200);
+  line(midx, midy,midx+400, midy);
+for(float t=midx;t<midx+400;t+=15)
+circle(t,midy,1);
+for( t=midy;t>midy-200;t-=15)
+circle(midx,t,1);
+line(midx, midy,midx, midy+200);
+  line(midx, midy,midx-400, midy);
+for( t=midx;t>midx-400;t-=15)
+circle(t,midy,1);
+for( t=midy;t<midy+200;t+=15)
+circle(midx,t,1);
+
+
+int j,k,a=midx2,b=midy2;
+int mn=mm;
+float e=.001;
+float w=15,q=15;
+for(float x=0;x<=15;x+=e)
+{
+double y=(1-((pow(x,2)/pow(m,2))*mn))*pow(n,2);
+  if(y<0)
+  break;
+  y=sqrt(y);
+j=midx2+(x*q);
+k=midy2-(y*w);
+line(a,b,j,k);
+a=j;b=k;}
+a=midx2,b=midy2;
+for( x=0;x<=15;x+=e)
+{
+double y=(1-((pow(x,2)/pow(m,2))*mn))*pow(n,2);
+  if(y<0)
+  break;
+  y=sqrt(y);
+j=midx2+(x*q);
+k=midy2+(y*w);
+line(a,b,j,k);
+a=j;b=k;}
+a=midx2,b=midy2;
+for( x=0;x>=-15;x-=e)
+{
+double y=(1-((pow(x,2)/pow(m,2))*mn))*pow(n,2);
+  if(y<0)
+  break;
+  y=sqrt(y);
+j=midx2+(x*q);
+k=midy2-(y*w);
+line(a,b,j,k);
+a=j;b=k;}
+a=midx2,b=midy2;
+for( x=0;x>=-15;x-=e)
+{
+double y=(1-((pow(x,2)/pow(m,2))*mn))*pow(n,2);
+  if(y<0)
+  break;
+  y=sqrt(y);
+j=midx2+(x*q);
+k=midy2+(y*w);
+line(a,b,j,k);
+a=j;b=k;}
+
+setcolor(0);
+if(mn==-1)
+{int big=(m>n)? m:n;
+line(midx2,midy2+(big*15),midx2,midy2-(big*15));
+}
+getch();
+ }
+
+
+
+void ellipse(int mn2)
+{
+int y=0,i;
+char msg[100];
+
+      int gdriver = DETECT, gmode, errorcode;
+   int midx, midy;
+   initgraph(&gdriver, &gmode, "");
+
+      i=5;
+      setcolor(2);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i);
+      if(mn2==1)
+      sprintf(msg, "[(x-( ))/( )] +[y-( )/( )] = 1", i);
+      else
+      sprintf(msg, "[(x-( ))/( )] -[y-( )/( )] = 1", i);
+      outtextxy(1, y, msg);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, 1);
+       textcolor(4);
+	outtextxy(222, 1, "2");
+	outtextxy(468, 1, "2");
+
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i-1);
+      outtextxy(580, y, "GO");
+
+char ch;
+enterellip1 ob;
+ob.inz(mn2);
+gotoxy(70,2);
+textcolor(2);
+cout<<".";
+st:
+ch=getch();
+if(ch==key[0])
+ob.clr(70,2);
+else if(ch==key[4])
+{closegraph();
+display(2,0);}
+else goto st;
+
+getch();
+}
+void retraceellip1()
+
+{
+//int gdriver = DETECT, gmode, errorcode;
+  int midx, midy;
+  // initgraph(&gdriver, &gmode, "");
+
+int y=0,i=5;
+char msg[100];
+setcolor(2);
+      setcolor(2);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i);
+      sprintf(msg, "[(x-( ))/( )] +[y-( )/( )] = 1", i);
+      outtextxy(1, y, msg);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, 1);
+       textcolor(4);
+	outtextxy(222, 1, "2");
+	outtextxy(468, 1, "2");
+
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i-1);
+      outtextxy(580, y, "GO");
+
+}
+
+void retraceline1();
+void retraceline2();
+void retraceline3();
+void retraceline4();
+void line(double,double);
+class entereline1
+{ double coff[2];
+public:
+void inz()
+{coff[0]=1;
+coff[1]=5;
+}
+void clr(int,int);
+};
+void entereline1 :: clr(int x,int y)
+{gotoxy(x,y);
+cout<<" ";
+
+int p=3;
+int pos[]={10,26,70};
+char ch;
+for(int z=0;z<p;z++)
+if(pos[z]==x)
+break;
+if(z==p-1)
+z=0;
+else z+=1;
+gotoxy(pos[z],y);
+cout<<".";
+st:
+ch=getch();
+if(ch==key[0])
+clr(pos[z],2);
+else if(ch==key[2]&& z!=p-1)
+{cin>>coff[z];goto st;}
+else if(ch==key[2]&& z==p-1)
+{line(coff[0],coff[1]);
+ retraceline1();
+ goto st;
+}
+else if(ch==key[4])
+{closegraph();
+display(2,0);}
+else goto st;
+}
+
+
+void line(double m,double c)
+{
+
+int gdriver = DETECT, gmode, errorcode;
+   int midx, midy;
+   initgraph(&gdriver, &gmode, "");
+
+   gotoxy(getmaxx()-2,0);
+   midx = getmaxx() / 2;
+   midy = getmaxy() / 2;
+cout<<m<<"\t"<<c<<"\n";
+int midx2=midx;
+int midy2=midy;
+    setcolor(g1);
+   setbkcolor(g2);
+   line(midx, midy,midx, midy-200);
+  line(midx, midy,midx+400, midy);
+for(float t=midx;t<midx+400;t+=15)
+circle(t,midy,1);
+for( t=midy;t>midy-200;t-=15)
+circle(midx,t,1);
+line(midx, midy,midx, midy+200);
+  line(midx, midy,midx-400, midy);
+for( t=midx;t>midx-400;t-=15)
+circle(t,midy,1);
+for( t=midy;t<midy+200;t+=15)
+circle(midx,t,1);
+int j,k,a=midx2,b=midy2;
+float e=.001;
+
+
+//int m=5,c=5;
+for(float x=0;x<=15;x+=e)
+{double y=m*x +c;
+j=midx2+(x*15);
+k=midy2-(y*15);
+line(a,b,j,k);
+a=j;b=k;}
+a=midx2;b=midy2;
+for( x=0;x>=-15;x-=e)
+{double y=m*x +c;
+j=midx2+(x*15);
+k=midy2-(y*15);
+line(a,b,j,k);
+a=j;b=k;}
+getch();
+}
+
+
+
+void line1()
+{
+int y=0,i;
+char msg[100];
+
+      int gdriver = DETECT, gmode, errorcode;
+   int midx, midy;
+   initgraph(&gdriver, &gmode, "");
+
+      i=5;
+      setcolor(2);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i);
+      sprintf(msg, "y=( )x + ( )", i);
+      outtextxy(1, y, msg);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, 1);
+       textcolor(4);
+
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i-1);
+      outtextxy(580, y, "GO");
+
+char ch;
+entereline1 ob;
+ob.inz();
+gotoxy(70,2);
+textcolor(2);
+cout<<".";
+st:
+ch=getch();
+if(ch==key[0])
+ob.clr(70,2);
+else if(ch==key[4])
+{closegraph();
+display(2,0);}
+else goto st;
+getch();
+}
+void retraceline1()
+
+{
+//int gdriver = DETECT, gmode, errorcode;
+  int midx, midy;
+  // initgraph(&gdriver, &gmode, "");
+
+int y=0,i=5;
+char msg[100];
+setcolor(2);
+      setcolor(2);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i);
+      sprintf(msg, "y=( )x +( )", i);
+      outtextxy(1, y, msg);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, 1);
+       textcolor(4);
+
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i-1);
+      outtextxy(580, y, "GO");
+
+}
+
+class entereline2
+{ double coff[2];
+public:
+void inz()
+{coff[0]=1;
+coff[1]=5;
+}
+void clr(int,int);
+};
+
+void  entereline2 :: clr(int x,int y)
+{gotoxy(x,y);
+cout<<" ";
+
+int p=3;
+int pos[]={10,27,70};
+char ch;
+for(int z=0;z<p;z++)
+if(pos[z]==x)
+break;
+if(z==2)
+z=0;
+else z+=1;
+gotoxy(pos[z],y);
+cout<<".";
+st:
+ch=getch();
+if(ch==key[0])
+clr(pos[z],2);
+else if(ch==key[2]&& z!=2)
+{gotoxy(pos[z],y);
+cin>>coff[z];
+
+goto st;}
+else if(ch==key[2]&& z==2)
+{line(-(coff[1]/coff[0]),coff[1]);
+ retraceline2();
+ goto st;
+}
+else if(ch==key[4])
+{closegraph();
+display(2,0);}
+else goto st;
+}
+
+void line2()
+{
+int y=0,i;
+char msg[100];
+
+      int gdriver = DETECT, gmode, errorcode;
+   int midx, midy;
+   initgraph(&gdriver, &gmode, "");
+
+      i=5;
+      setcolor(2);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i);
+      sprintf(msg, "x/( ) +y/( )=1", i);
+      outtextxy(1, y, msg);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, 1);
+       textcolor(4);
+
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i-1);
+      outtextxy(580, y, "GO");
+
+char ch;
+entereline2 ob;
+ob.inz();
+gotoxy(70,2);
+textcolor(2);
+cout<<".";
+st:
+ch=getch();
+if(ch==key[0])
+ob.clr(70,2);
+else if(ch==key[4])
+{closegraph();
+display(2,0);}
+
+else goto st;
+getch();
+}
+void retraceline2()
+
+{
+//int gdriver = DETECT, gmode, errorcode;
+  int midx, midy;
+  // initgraph(&gdriver, &gmode, "");
+
+int y=0,i=5;
+char msg[100];
+setcolor(2);
+      setcolor(2);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i);
+      sprintf(msg, "x/( ) +y/( )=1", i);
+      outtextxy(1, y, msg);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, 1);
+       textcolor(4);
+
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i-1);
+      outtextxy(580, y, "GO");
+
+}
+
+class entereline3
+{ double coff[4];
+public:
+void inz()
+{coff[0]=0;
+coff[1]=5;
+coff[2]=0;
+coff[3]=5;
+}
+void clr(int,int);
+};
+
+void  entereline3 :: clr(int x,int y)
+{gotoxy(x,y);
+cout<<" ";
+
+int p=5;
+int pos[]={9,28,46,67,70};
+char ch;
+for(int z=0;z<p;z++)
+if(pos[z]==x)
+break;
+if(z==p-1)
+z=0;
+else z+=1;
+gotoxy(pos[z],y);
+cout<<".";
+st:
+ch=getch();
+if(ch==key[0])
+clr(pos[z],2);
+else if(ch==key[2]&& z!=p-1)
+{
+cin>>coff[z];goto st;}
+else if(ch==key[2]&& z==p-1)
+{double vv=3.14/180;
+line((sin(vv*coff[3])/cos(vv*coff[1])),coff[2]-(coff[0]*(sin(vv*coff[3])/cos(vv*coff[1]))));
+ retraceline3();
+ goto st;
+}
+else if(ch==key[4])
+{closegraph();
+display(2,0);}
+else goto st;
+}
+
+void line3()
+{
+int y=0,i;
+char msg[100];
+
+      int gdriver = DETECT, gmode, errorcode;
+   int midx, midy;
+   initgraph(&gdriver, &gmode, "");
+
+      i=5;
+      setcolor(2);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i);
+      sprintf(msg, "x=( )+rcos( ),y=( )+rsin( )", i);
+      outtextxy(1, y, msg);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, 1);
+       textcolor(4);
+
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i-1);
+      outtextxy(580, y, "GO");
+
+char ch;
+entereline3 ob;
+ob.inz();
+gotoxy(70,2);
+textcolor(2);
+cout<<".";
+st:
+ch=getch();
+if(ch==key[0])
+ob.clr(70,2);
+else if(ch==key[4])
+{closegraph();
+display(2,0);}
+else goto st;
+getch();
+}
+void retraceline3()
+
+{
+//int gdriver = DETECT, gmode, errorcode;
+  int midx, midy;
+  // initgraph(&gdriver, &gmode, "");
+
+int y=0,i=5;
+char msg[100];
+setcolor(2);
+      setcolor(2);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i);
+      sprintf(msg, "x=( )+rcos( ),y=( )+rsin( )", i);
+      outtextxy(1, y, msg);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, 1);
+       textcolor(4);
+
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i-1);
+      outtextxy(580, y, "GO");
+
+}
+
+class entereline4
+{ double coff[3];
+public:
+void inz()
+{coff[0]=0;
+coff[1]=0;
+coff[2]=1;
+}
+void clr(int,int);
+};
+
+void  entereline4 :: clr(int x,int y)
+{gotoxy(x,y);
+cout<<" ";
+
+int p=4;
+int pos[]={9,19,33,70};
+char ch;
+for(int z=0;z<p;z++)
+if(pos[z]==x)
+break;
+if(z==p-1)
+z=0;
+else z+=1;
+gotoxy(pos[z],y);
+cout<<".";
+st:
+ch=getch();
+if(ch==key[0])
+clr(pos[z],2);
+else if(ch==key[2]&& z!=p-1)
+{
+cin>>coff[z];goto st;}
+else if(ch==key[2]&& z==p-1)
+{
+line(coff[1],coff[0]-coff[1]*coff[2]);
+ retraceline4();
+ goto st;
+}
+else if(ch==key[4])
+{closegraph();
+display(2,0);}
+else goto st;
+}
+
+void line4()
+{
+int y=0,i;
+char msg[100];
+
+      int gdriver = DETECT, gmode, errorcode;
+   int midx, midy;
+   initgraph(&gdriver, &gmode, "");
+
+      i=5;
+      setcolor(2);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i);
+      sprintf(msg, "y-( )=( )(x-( ))", i);
+      outtextxy(1, y, msg);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, 1);
+       textcolor(4);
+
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i-1);
+      outtextxy(580, y, "GO");
+
+char ch;
+entereline4 ob;
+ob.inz();
+gotoxy(70,2);
+textcolor(2);
+cout<<".";
+st:
+ch=getch();
+if(ch==key[0])
+ob.clr(70,2);
+else if(ch==key[4])
+{closegraph();
+display(2,0);}
+
+else goto st;
+getch();
+}
+void retraceline4()
+
+{
+//int gdriver = DETECT, gmode, errorcode;
+  int midx, midy;
+  // initgraph(&gdriver, &gmode, "");
+
+int y=0,i=5;
+char msg[100];
+setcolor(2);
+      setcolor(2);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i);
+      sprintf(msg, "y-( )=( )(x-( ))", i);
+      outtextxy(1, y, msg);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, 1);
+       textcolor(4);
+
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i-1);
+      outtextxy(580, y, "GO");
+
+}
+
+void logbase(double);
+void retracelog();
+class enterelog
+{ double coff[1];
+public:
+void inz()
+{coff[0]=1;
+}
+ void clr(int,int);
+ };
+
+ void enterelog :: clr(int x,int y)
+{gotoxy(x,y);
+cout<<" ";
+
+int pos[]={33,75};
+char ch;
+for(int z=0;z<2;z++)
+if(pos[z]==x)
+break;
+if(z==1)
+z=0;
+else z+=1;
+gotoxy(pos[z],y);
+cout<<".";
+st:
+ch=getch();
+if(ch==key[0])
+clr(pos[z],y);
+else if(ch==key[2]&& z!=1)
+{cin>>coff[z];goto st;}
+else if(ch==key[2]&& z==1)
+{logbase(coff[0]);
+ retracelog();
+ goto st;
+}
+else if(ch==key[4])
+{closegraph();
+display(2,0);}
+else goto st;
+}
+
+void logbase(double base2)
+{
+//double base2=2;
+double base=log(base2);
+int gdriver = DETECT, gmode, errorcode;
+   int midx, midy;
+   initgraph(&gdriver, &gmode, "");
+
+   gotoxy(getmaxx()-2,0);
+   midx = getmaxx() / 2;
+   midy = getmaxy() / 2;
+int midx2=midx;
+int midy2=midy;
+    setcolor(g1);
+   setbkcolor(g2);
+
+   float w=4,q=4;
+   line(midx, midy,midx, midy-200);
+  line(midx, midy,midx+400, midy);
+for(float t=midx;t<midx+400;t+=w)
+circle(t,midy,1);
+for( t=midy;t>midy-200;t-=q*12)
+circle(midx,t,1);
+line(midx, midy,midx, midy+200);
+  line(midx, midy,midx-400, midy);
+for( t=midx;t>midx-400;t-=w)
+circle(t,midy,1);
+for( t=midy;t<midy+200;t+=q*12)
+circle(midx,t,1);
+int j,k,a=midx2,b=midy2;
+float e=.1;
+int m=1;
+if(m<1)
+e*=10;
+int times=0;
+double magx=q,magy=w*w*w    ;
+if(base2<1)
+{magx*=q*q;
+magy*=1;}
+for(float x=.1;x<=50;x+=e,times++)
+{
+double y;
+y=log(x)/base;
+j=midx2+(x*magx)   ;
+k=midy2-(y*magy);
+if(k>getmaxx()-50)
+break;
+if(times>0)
+line(a,b,j,k);
+a=j;b=k;}
+getch();}
+void retracelog()
+{
+      int y=0,i=5;
+char msg[100];
+
+      setcolor(2);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i);
+      sprintf(msg, "log x", i);
+      outtextxy(200, y, msg);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, 1);
+       textcolor(4);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i-1);
+      outtextxy(580, y, "GO");
+}
+
+
+
+void logr()
+{
+int y=0,i;
+char msg[100];
+
+      int gdriver = DETECT, gmode, errorcode;
+   int midx, midy;
+   initgraph(&gdriver, &gmode, "");
+
+      i=5;
+      setcolor(2);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i);
+      sprintf(msg, "log x", i);
+      outtextxy(200, y+5, msg);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, 1);
+       textcolor(4);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i-1);
+      outtextxy(580, y, "GO");
+
+char ch;
+enterelog ob;
+ob.inz();
+gotoxy(75,4);
+textcolor(2);
+cout<<".";
+st:
+ch=getch();
+if(ch==key[0])
+ob.clr(75,4);
+else if(ch==key[4])
+{closegraph();
+display(2,0);}
+else goto st;
+getch();
+}
+
+
+void pow(double);
+void retracepow();
+
+class enterepow
+{ double coff[1];
+public:
+void inz()
+{coff[0]=1;
+}
+void clr(int,int);
+};
+void enterepow ::clr(int x,int y)
+{gotoxy(x,y);
+cout<<" ";
+
+int pos[]={30,70};
+char ch;
+for(int z=0;z<2;z++)
+if(pos[z]==x)
+break;
+if(z==1)
+z=0;
+else z+=1;
+gotoxy(pos[z],y);
+cout<<".";
+st:
+ch=getch();
+if(ch==key[0])
+clr(pos[z],2);
+else if(ch==key[2]&& z!=1)
+{cin>>coff[z];goto st;}
+else if(ch==key[2]&& z==1)
+{pow(coff[0]);
+ retracepow();
+ goto st;
+}
+else if(ch==key[4])
+{closegraph();
+display(2,0);}
+else goto st;
+}
+
+void pow(double m)
+{
+int gdriver = DETECT, gmode, errorcode;
+   int midx, midy;
+   initgraph(&gdriver, &gmode, "");
+
+   gotoxy(getmaxx()-2,0);
+   midx = getmaxx() / 2;
+   midy = getmaxy() / 2;
+int midx2=midx;
+int midy2=midy;
+    setcolor(g1);
+   setbkcolor(g2);
+
+float w=4,q=4;
+   line(midx, midy,midx, midy-200);
+  line(midx, midy,midx+400, midy);
+for(float t=midx;t<midx+400;t+=w)
+circle(t,midy,1);
+for( t=midy;t>midy-200;t-=q)
+circle(midx,t,1);
+line(midx, midy,midx, midy+200);
+  line(midx, midy,midx-400, midy);
+for( t=midx;t>midx-400;t-=w)
+circle(t,midy,1);
+for( t=midy;t<midy+200;t+=q)
+circle(midx,t,1);
+
+
+int j,k,a=midx2,b=midy2;
+float e=.1;
+if(m<1)
+e*=10;
+for(float x=0;x<=5;x+=e)
+{
+double y;
+y=pow(m,x);
+j=midx2+(x*q*q*q);
+k=midy2-(y*w);
+if(k<0 || k>midy-1)
+continue;
+line(a,b,j,k);
+a=j;b=k;}
+a=midx2,b=midy2;
+for( x=0;x>=-5;x-=e)
+{
+double y;
+
+ y=1/pow(m,abs(x));
+  if(y<0)
+  break;
+j=midx2+(x*q*q*q);
+k=midy2-(y*w);
+if(k<0 || k>midy-1)
+continue;
+line(a,b,j,k);
+a=j;b=k;}
+a=midx2,b=midy2;
+setcolor(0);
+getch();}
+
+
+
+void power()
+{
+int y=0,i;
+char msg[100];
+
+      int gdriver = DETECT, gmode, errorcode;
+   int midx, midy;
+   initgraph(&gdriver, &gmode, "");
+
+      i=5;
+      setcolor(2);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i);
+      sprintf(msg, "( )", i);
+      outtextxy(220, y, msg);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, 1);
+       textcolor(4);
+	outtextxy(265, 1, "x");
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i-1);
+      outtextxy(580, y, "GO");
+
+char ch;
+enterepow ob;
+ob.inz();
+gotoxy(70,2);
+textcolor(2);
+cout<<".";
+st:
+ch=getch();
+if(ch==key[0])
+ob.clr(70,2);
+else if(ch==key[4])
+{closegraph();
+display(2,0);}
+else goto st;
+getch();
+}
+
+void retracepow()
+{
+      int y=0,i=5;
+char msg[100];
+
+      setcolor(2);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i);
+      sprintf(msg, "( )", i);
+      outtextxy(220, y, msg);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, 1);
+       textcolor(4);
+	outtextxy(265, 1, "x");
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i-1);
+      outtextxy(580, y, "GO");
+}
+
+void trig(double,double,double,double,double,double,double);
+double val(double,double);
+double res(double,double,double);
+
+struct t
+{char name[20];
+};
+void trig2()
+{
+       int gdriver = DETECT, gmode, errorcode;
+   int midx, midy;
+   initgraph(&gdriver, &gmode, "");
+
+t ob[7];
+t obj[4];
+strcpy(ob[0].name,"SIN");
+strcpy(ob[1].name,"COS");
+strcpy(ob[2].name,"TAN");
+strcpy(ob[3].name,"COSEC");
+strcpy(ob[4].name,"SEC");
+strcpy(ob[5].name,"COT");
+strcpy(ob[6].name,"____");
+strcpy(obj[0].name,"+");
+strcpy(obj[1].name,"-");
+strcpy(obj[2].name,"*");
+strcpy(obj[3].name,"/");
+
+int y=0,i=5;
+char msg[100];
+       char ch;
+       setcolor(2);
+      int p=0,g=100,r=12;
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i+3);
+double cof[7];
+st:
+      sprintf(msg, ob[p].name, i);
+      outtextxy(g, y, msg);
+      gotoxy(20,6);
+       st2:
+       ch=getch();
+	if(ch=='c')
+	{ gotoxy(r,5);
+	cout<<"                                                 ";
+	  gotoxy(r,4);
+	cout<<"                                                ";
+	gotoxy(r,3);
+	cout<<"                                                ";
+	  gotoxy(r,2);
+	cout<<"                                                ";
+
+	if(p!=5)
+	p+=1;
+	else
+	p=0;
+	goto st;
+	}
+	else if(ch==key[2] && g!=400)
+	{cof[0]=p+1;
+	g=400;r=42;p=0; goto st;}
+	else if(ch==key[2] && g==400)
+	{cof[3]=p+1;
+	if(cof[0]!=3)
+	{gotoxy(30,2);cin>>cof[1];}
+	else
+	{gotoxy(42,2);cin>>cof[1];}
+	if(cof[3]!=3)
+	{gotoxy(67,2);cin>>cof[4];}
+	else
+	{gotoxy(79,2);cin>>cof[4];}
+
+	      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i);
+      sprintf(msg, "( )", i);
+      outtextxy(49, 25, msg);
+      outtextxy(349, 25, msg);
+	gotoxy(8,4);
+	cin>>cof[2];
+	gotoxy(46,4);
+	cin>>cof[5];
+	int k=0;
+
+	settextstyle(TRIPLEX_FONT, HORIZ_DIR, i+2);
+      sprintf(msg, obj[k].name, i);
+      outtextxy(290, y, msg);
+      gotoxy(20,6);
+       ch=getch();
+       if(ch=='c')
+       {if(k!=3)
+       k+=1;
+       else k=0;
+       gotoxy(36,5);
+       cout<<"         ";
+       gotoxy(36,4);
+       cout<<"         ";
+       gotoxy(36,3);
+       cout<<"         ";
+       gotoxy(36,2);
+       cout<<"         ";
+       gotoxy(36,1);
+       cout<<"         ";
+       goto st2;
+       }
+       else if(ch==key[2])
+       {cof[6]=k+1;
+	for(int nb=0;nb<=6;nb++)
+	cout<<"\n"<<cof[nb];}
+       trig(cof[0],cof[1],cof[2],cof[3],cof[4],cof[5],cof[6]);
+       getch();
+       closegraph();
+       display(2,0);
+       }
+
+
+getch();
+}
+
+double val(double x,double n2)
+{int  n=(int)n2;
+x=(x*22)/(7*180);
+switch(n)
+{case 1:return sin(x);
+case 2:return cos(x);
+case 3:return tan(x);
+case 4: if(sin(x)!=0)
+	return 1/sin(x);
+	else return 0;
+case 5: if(cos(x)!=0)
+	return 1/cos(x);
+	else return 0;
+case 6: if(tan(x)!=0)
+	return 1/tan(x);
+	else return 0;
+
+default :return 0;
+}
+}
+
+double res(double a,double b,double c2)
+{int c=(int)c2;
+switch(c)
+{
+case 1:return a+b;
+case 2:return a-b;
+case 3:return a*b;
+case 4:return a/b;
+default :return 0;
+}
+}
+
+void trig(double c1,double c2,double c3,double c4,double c5,double c6,double c7)
+{
+
+ int gdriver = DETECT, gmode, errorcode;
+   int midx, midy;
+   initgraph(&gdriver, &gmode, "");
+//   errorcode = graphresult();
+midx = getmaxx() / 2 -250;
+midy = getmaxy() / 2 +130;
+ setcolor(g1);
+   setbkcolor(g2);
+line(midx, midy,midx, midy-400);
+   line(midx, midy,midx+400, midy);
+double cof[7];
+cof[0]=c1;cof[1]=c2;cof[2]=c3;cof[3]=c4;cof[4]=c5;cof[5]=c6;cof[6]=c7;
+int j,k,a=midx,b=midy;
+for(float x=0;x<=360;x++)
+{double y2=val(x,cof[0]);
+y2=pow(y2,cof[1]);
+y2*=cof[2];
+double y1=val(x,cof[3]);
+y1=pow(y1,cof[4]);
+y1*=cof[5];
+double y3=res(y2,y1,cof[6]);
+int y=y3*100;
+j=midx+x;
+k=midy-y;
+line(a,b,j,k);
+a=j;b=k;}
+}
+void exp(int);
+void retraceexp();
+class enterexp
+{ double coff[1];
+public:
+void inz()
+{coff[0]=1;
+}
+void clr(int,int);
+};
+
+void enterexp :: clr(int x,int y)
+{gotoxy(x,y);
+cout<<" ";
+
+int pos[]={32,70};
+char ch;
+for(int z=0;z<2;z++)
+if(pos[z]==x)
+break;
+if(z==1)
+z=0;
+else z+=1;
+gotoxy(pos[z],y);
+cout<<".";
+st:
+ch=getch();
+if(ch==key[0])
+clr(pos[z],2);
+else if(ch==key[2]&& z!=1)
+{cin>>coff[z];goto st;}
+else if(ch==key[2]&& z==1)
+{exp((int)coff[0]);
+ retraceexp();
+ goto st;
+}
+else if(ch==key[4])
+{closegraph();
+display(2,0);
+}
+else goto st;
+}
+
+void exp(int m)
+{
+int gdriver = DETECT, gmode, errorcode;
+   int midx, midy;
+   initgraph(&gdriver, &gmode, "");
+
+   gotoxy(getmaxx()-2,0);
+   midx = getmaxx() / 2;
+   midy = getmaxy() / 2;
+int midx2=midx;
+int midy2=midy;
+    setcolor(g1);
+   setbkcolor(g2);
+
+float w=4,q=4;
+   line(midx, midy,midx, midy-200);
+  line(midx, midy,midx+400, midy);
+for(float t=midx;t<midx+400;t+=w)
+circle(t,midy,1);
+for( t=midy;t>midy-200;t-=q)
+circle(midx,t,1);
+line(midx, midy,midx, midy+200);
+  line(midx, midy,midx-400, midy);
+for( t=midx;t>midx-400;t-=w)
+circle(t,midy,1);
+for( t=midy;t<midy+200;t+=q)
+circle(midx,t,1);
+
+//making graph
+int j,k,a=midx2,b=midy2;
+float e=.1;
+
+if(m>=0)
+{
+for(float x=-e;x>=-5;x-=e)
+{
+double y;
+y=pow(x,m);
+j=midx2+(x*q*q*q);
+k=midy2-(y*w*w*w);
+//if(k<0 || k>midy-1)
+//continue;
+line(a,b,j,k);
+a=j;b=k;
+}
+
+a=midx2;b=midy2;
+for( x=e;x<=5;x+=e)
+{
+double y;
+y=pow(x,m);;
+j=midx2+(x*q*q*q);
+k=midy2-(y*w*w*w);
+if(k<0 || k>midy-1)
+continue;
+line(a,b,j,k);
+a=j;b=k;
+}
+}
+if(m<0)
+{
+for(float x=-e;x>=-5;x-=e)
+{
+double y;
+y=pow(x,m);
+j=midx2+(x*q*q*q);
+k=midy2-(y*w*w*w);
+//if(k<0 || k>midy-1)
+//continue;
+line(a,b,j,k);
+a=j;b=k;
+}
+
+a=midx2;b=midy2;
+e/=100;
+for( x=e;x<=5;x+=e)
+{
+double y;
+y=pow(x,m);;
+j=midx2+(x*q*q*q);
+k=midy2-(y*w*w*w);
+if(k<0 || k>midy-1)
+continue;
+if(a!=midx)
+line(a,b,j,k);
+a=j;b=k;
+}
+}
+
+getch();
+}
+
+
+
+void expo()
+{
+int y=6,i;
+char msg[100];
+
+      int gdriver = DETECT, gmode, errorcode;
+   int midx, midy;
+   initgraph(&gdriver, &gmode, "(  )");
+
+      i=5;
+      setcolor(2);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i);
+      sprintf(msg, "x", i);
+      outtextxy(220, y+2, msg);
+
+      settextstyle(GOTHIC_FONT, HORIZ_DIR, 1);
+	outtextxy(245, 1, "(  )");
+
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i-1);
+      outtextxy(580, y, "GO");
+
+char ch;
+enterexp ob;
+ob.inz();
+gotoxy(70,2);
+textcolor(2);
+cout<<".";
+st:
+ch=getch();
+if(ch==key[0])
+ob.clr(70,2);
+else if(ch==key[4])
+{closegraph();
+display(2,0);
+}
+else goto st;
+getch();
+}
+
+void retraceexp()
+{
+      int y=1,i=5;
+char msg[100];
+
+      setcolor(2);
+      cout<<"\n\n\n";
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i);
+      sprintf(msg, "x", i);
+      outtextxy(220, y+2, msg);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, 1);
+       textcolor(4);
+	outtextxy(245, 1, "(  )");
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i-1);
+      outtextxy(580, y, "GO");
+}
+
+
+void cube(int,int,int,int);
+void retracecube();
+class entercube
+{ int coff[4];
+public:
+void inz()
+{coff[0]=1;
+coff[1]=1;
+coff[2]=1;
+coff[3]=1;
+}
+void clr(int,int);
+};
+
+void entercube :: clr(int x,int y)
+{gotoxy(x,y);
+cout<<" ";
+
+int pos[]={6,25,45,60,70};
+char ch;
+for(int z=0;z<=5;z++)
+if(pos[z]==x)
+break;
+if(z==4)
+z=0;
+else z+=1;
+gotoxy(pos[z],y);
+cout<<".";
+st:
+ch=getch();
+if(ch==key[0])
+clr(pos[z],2);
+else if(ch==key[2]&& z!=4)
+{cin>>coff[z];goto st;}
+else if(ch==key[2]&& z==4)
+{cube(coff[0],coff[1],coff[2],coff[3]);
+ retracecube();
+ goto st;
+}
+else if(ch==key[4])
+{closegraph();
+display(2,0);
+}
+else goto st;
+}
+
+void cube(int p,int q,int r,int s)
+{
+int gdriver = DETECT, gmode, errorcode;
+   int midx, midy;
+   initgraph(&gdriver, &gmode, "");
+
+   gotoxy(getmaxx()-2,0);
+   midx = getmaxx() / 2;
+   midy = getmaxy() / 2;
+int midx2=midx;
+int midy2=midy;
+    setcolor(g1);
+   setbkcolor(g2);
+
+float w=4;
+   line(midx, midy,midx, midy-200);
+  line(midx, midy,midx+400, midy);
+for(float t=midx;t<midx+400;t+=w)
+circle(t,midy,1);
+for( t=midy;t>midy-200;t-=q)
+circle(midx,t,1);
+line(midx, midy,midx, midy+200);
+  line(midx, midy,midx-400, midy);
+for( t=midx;t>midx-400;t-=w)
+circle(t,midy,1);
+for( t=midy;t<midy+200;t+=q)
+circle(midx,t,1);
+
+//making graph
+int j,k,a=midx2,b=midy2;
+float e=.1;
+
+for(float x=-5;x<=5;x+=e)
+{
+double y;
+y=p*pow(x,3) +q*pow(x,2)+r*x+s;
+j=midx2+(x*w*w*w);
+k=midy2-(y*w*w*w);
+//if(k<0 || k>midy-1)
+//continue;
+if(a!=midx)
+line(a,b,j,k);
+a=j;b=k;
+}
+
+getch();
+}
+
+
+
+void cubic()
+{
+int y=1,i;
+char msg[100];
+
+      int gdriver = DETECT, gmode, errorcode;
+   int midx, midy;
+   initgraph(&gdriver, &gmode, "(  )");
+
+      i=5;
+      setcolor(2);
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i);
+      sprintf(msg, "(  )x + (  )x + ( )x +( )", i);
+      outtextxy(20, y, msg);
+
+      settextstyle(GOTHIC_FONT, HORIZ_DIR, 1);
+	outtextxy(110, 1, "3                 2   ");
+
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i-1);
+      outtextxy(580, y, "GO");
+
+char ch;
+entercube ob;
+ob.inz();
+gotoxy(70,2);
+textcolor(2);
+cout<<".";
+st:
+ch=getch();
+if(ch==key[0])
+ob.clr(70,2);
+else if(ch==key[4])
+{closegraph();
+display(2,0);
+}
+else goto st;
+getch();
+}
+
+void retracecube()
+{
+      int y=1,i=5;
+char msg[100];
+
+      setcolor(2);
+      cout<<"\n\n\n";
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i);
+      sprintf(msg, "(  )x + (  )x + ( )x +( )", i);
+      outtextxy(20, y, msg);
+
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, 1);
+	outtextxy(110, 1, "3                 2   ");
+
+
+      settextstyle(TRIPLEX_FONT, HORIZ_DIR, i-1);
+      outtextxy(580, y, "GO");
+}
+
+
+//end of graphic functions
+void make(int c1,int c2)
+{int b=2;
+bar(8-b,c1,55,10,0);
+bar(24,c1,55,10,0);
+bar2(15,c1,25,2);
+bar2(65,c1,25,2);
+
+bar2(1,c2,25,1);
+bar2(12,c2,25,1);
+
+bar2(70,c2,25,1);
+bar2(80,c2,25,1);
+
+bar3(1,5,c2,12);
+bar3(1,23,c2,12);
+
+bar3(70,5,c2,10);
+bar3(70,23,c2,10);
+}
+
+
+void corner2(int l)
+{ int col[3]={0,0,0};
+  col[l-1]=cc3;
+textcolor(cc1);
+textbackground(col[0]);
+gotoxy(2,8);
+cprintf("CONTROLS");
+textbackground(col[1]);
+gotoxy(2,15);
+cprintf("CHANGE");
+textbackground(col[2]);
+gotoxy(2,22);
+cprintf("STATISTICS");
+
+
+char ch;
+st:
+ch=getch();
+if(ch==key[1])
+{if(l!=3)
+l+=1;
+else
+l=1;
+corner2(l);
+}
+else if(ch==key[3])
+upper(1);
+
+else if(ch==key[2])
+{ switch(l)
+{ case 1: textcolor(0);
+	  textbackground(0);
+	  clrscr();
+	   textcolor(14);
+	  cout<<"\n\n\n\n\n\n";
+	  cprintf("                 g ..........HORIZONTOL SCROLL");
+	  cout<<"\n\n\n";
+	  cprintf("                 v ..........VERTICAL SCROLL ");
+	  cout<<"\n\n\n";
+	  cprintf("                 h ..........ENTER,TO BEGIN WRITING\n ");
+	  cout<<"\n\n\n";
+	  cprintf("                 f ..........MOVE TO NEXT MENU BLOCK \n");
+	  cout<<"\n\n\n";
+	  cprintf("                 b ..........BACK TO MAIN MENU \n");
+	   getch();
+	   textcolor(0);
+	  textbackground(0);
+	  clrscr();
+	  display(2,0);
+	  break;
+  case 2 : textcolor(0);
+	  textbackground(0);
+	  clrscr();
+	  change();
+	  break;
+  case 3: textcolor(14);
+	  textbackground(0);
+	  stat();
+	  break;
+}
+}
+else goto st;
+}
+
+void corner(int l)
+{ int col[3]={0,0,0};
+  col[l-1]=cc3;
+textcolor(cc1);
+textbackground(col[0]);
+gotoxy(72,8);
+cprintf("ABOUT");
+textbackground(col[1]);
+gotoxy(72,15);
+cprintf("COMMENT");
+textbackground(col[2]);
+gotoxy(72,22);
+cprintf("QUIT");
+char ch;
+st:
+ch=getch();
+if(ch==key[1])
+{if(l!=3)
+l+=1;
+else
+l=1;
+corner(l);
+}
+else if(ch==key[3])
+corner2(1);
+else if(ch==key[2] && l==3)
+{//exit(0);
+close();}
+else if(ch==key[2] && l==2)
+comment();
+
+else goto st;
+}
+void bar5(int,int,int);
+int big(int *,int);
+
+
+void bar5(int x,int c,int l)
+{gotoxy(x,20);
+textcolor(c);
+textbackground(c);
+for(int y=0;y<l;y++)
+{gotoxy(x,20-y);
+cprintf("   ");
+}
+}
+void bgraph(int *num,int l)
+{
+int b=big(num,l);
+int s=35-2*l ;
+for(int nm=0;nm<l;nm++)
+{
+if((nm)%8 !=0)
+bar5(s+5*nm,nm,(int)(num[nm]*18)/b);
+else
+bar5(s+5*nm,4,(int)(num[nm]*18)/b);
+}
+}
+int big(int *n ,int l)
+{int big=0;
+for(int t=0;t<l;t++)
+if(n[t]>big)
+big=n[t];
+return big;
+}
+
+void pgraph(int num[],int l)
+{
+
+   int midx, midy;
+   int sum=0;
+   double angle[15];
+   int stangle, endangle, radius = 150;
+ midx = getmaxx() / 2;
+   midy = getmaxy() / 2;
+stangle=0;
+angle[0]=0;
+
+   for(int f=0;f<l;f++)
+   sum+=num[f];
+for(f=1;f<l+1;f++)
+angle[f]=(num[f-1]*360)/sum;
+
+double sum2=0;
+ for(f=0;f<l;f++)
+ sum2+=angle[f];
+angle[l]=360-sum2;
+ for(f=1;f<l+1;f++)
+angle[f]+=angle[f-1];
+int g;
+for(f=0;f<l;f++)
+ { g=f+1;
+ setfillstyle(SOLID_FILL, g);
+ stangle=angle[f];
+ endangle=angle[f+1];
+   pieslice(midx+50, midy,stangle,endangle, radius);
+}
+getch();
+}
+
+
+
+void stat()
+{clrscr();
+int n[5][10];
+int j=0,k=0,l,t;
+char ch;
+int c[5]={1,14,2,3,4};
+int q=0;
+textcolor(14);
+cprintf("ENTER NO OF CATEGORIES");
+cout<<"\n";
+cin>>l;
+st:
+textcolor(c[q]);
+cprintf("ENTER VALUES FOR ENTRY-");
+cout<<j+1<<"\n";
+for(k=0;k<l;k++)
+cin>>n[j][k];
+cprintf("enter more entrys(y/n) " );
+ch=getch();
+cout<<ch;
+if(ch=='y')
+{j+=1;
+cout<<"\n\n";
+if(q==4)
+q=0;
+else
+q++;
+goto st;
+}
+
+
+for(int b=0;b<=j;b++)
+{
+textcolor(0);
+textbackground(0);
+clrscr();
+
+bgraph(n[b],l);
+getch();
+}
+int gdriver = DETECT, gmode, errorcode;
+   initgraph(&gdriver, &gmode, "");
+//errorcode = graphresult();
+
+for( b=0;b<=j;b++)
+{
+cleardevice();
+pgraph(n[b],l);
+}
+closegraph();
+display(2,0);
+}
+
+
+void display(int l,int v)
+{
+
+
+make(cc4,cc5);
+gotoxy(29,1);
+textcolor(2+BLINK);
+textbackground(0);
+cprintf("G R A P H  W E A V E R ");
+
+
+int c3=cc1,c4=cc2,c5=cc3;
+for(int zz=0;zz<4;zz++)
+bar3(1,zz,0,25);
+int col[4][3]={{0,0,0},{0,0,0},{0,0,0},{0,0,0}};
+col[v][l-1]=c5;
+
+char ch;
+bar3(1,2,4,80);
+//bar3(1,25,4,50);
+textcolor(c3);
+textbackground(0);
+gotoxy(2,3);
+cprintf("KEYS");
+gotoxy(75,3);
+cprintf("SCALE");
+
+
+gotoxy(2,8);
+cprintf("CONTROLS");
+gotoxy(2,15);
+cprintf("CHANGE");
+gotoxy(2,22);
+cprintf("STATISTICS");
+
+gotoxy(72,8);
+cprintf("ABOUT");
+gotoxy(72,15);
+cprintf("COMMENT");
+gotoxy(72,22);
+cprintf("QUIT");
+
+textcolor(c4);
+textbackground(2);
+int b=2;
+
+textbackground(col[0][0]);
+gotoxy(10+4*b,10-b);
+cprintf("CIRCLES");
+textbackground(col[0][1]);
+gotoxy(35,10-b);
+cprintf("QUADRATIC");
+textbackground(col[0][2]);
+gotoxy(48+b,10-b);
+cprintf("PARABOLA");
+textbackground(col[1][0]);
+gotoxy(10+4*b,15-b);
+cprintf("ELLIPSE");
+textbackground(col[1][1]);
+gotoxy(33+b,15-b);
+cprintf("HYPERBOLA");
+textbackground(col[1][2]);
+gotoxy(48+b,15-b);
+cprintf("LINE");
+textbackground(col[2][0]);
+gotoxy(10+4*b,20-b);
+cprintf("EXPONENT");
+textbackground(col[2][1]);
+gotoxy(33+b,20-b);
+cprintf("LOGARITHIM");
+textbackground(col[2][2]);
+gotoxy(48+b,20-b);
+cprintf("TRIGONOMETRIC");
+textbackground(col[3][0]);
+gotoxy(10+4*b,24-b);
+cprintf("POWER");
+textbackground(col[3][1]);
+gotoxy(33+b,24-b);
+cprintf("CUBIC");
+textbackground(col[3][2]);
+gotoxy(48+b,24-b);
+cprintf("COMBINED");
+
+gotoxy(59+b,0);
+//bar(75,4,85,10,0);
+//bar(75,0,7,10,0);
+st:
+ch=getch();
+if(ch==key[0])
+{if(l!=3)
+l+=1;
+else
+l=1;
+display(l,v);
+}
+else if(ch==key[1])
+{
+if(v!=3)
+v+=1;
+else
+v=0;
+display(l,v);
+}
+else if(ch==key[3])
+{corner(1);
+}
+
+else if(ch==key[2])
+{
+switch(v)
+{case 0:{switch(l)
+	    {case 1: textcolor(0);
+		     clrscr();
+		     display2(1);
+		     break;
+	     case 2:quad();
+		    break;
+	     case 3:textcolor(0);
+		     clrscr();
+		   display3(1);
+		   break;
+	    }
+	 }
+case 1: {switch(l)
+	    {case 1:ellipse(1);
+		    break;
+	     case 2:ellipse(-1);
+		    break;
+	     case 3: textcolor(0);
+		     clrscr();
+		    display4(1);
+		    break;
+	    }
+	 }
+
+case 2: {switch(l)
+	    {case 1:power();
+		    break;
+	     case 2:logr();
+		    break;
+	     case 3:trig2();
+		    break;
+	    }
+	 }
+case 3: {switch(l)
+	    {case 1:expo();
+		    break;
+	     case 2:cubic();
+		    break;
+	     case 3:
+		    break;
+	    }
+	 }
+
+
+}
+}
+
+else
+{
+ goto st;
+}
+}
+
+void display2(int l)
+{
+bar(8,0,70,10,0);
+bar(22,0,70,10,0);
+bar(8,5,70,10,0);
+bar(17,5,70,10,0);
+
+int col[2]={0,0};
+col[l-1]=2;
+textcolor(14);
+textbackground(2);
+char ch;
+textbackground(col[0]);
+gotoxy(10,10);
+textcolor(14);
+cprintf("FORM:1 ");
+textbackground(0);
+textcolor(14);
+cprintf("     (x-h)' +(y-k)'=r'                                            ");
+textbackground(col[1]);
+gotoxy(10,15);
+cprintf("FORM2");
+textbackground(0);
+textcolor(14);
+cprintf("      x'+y'+2gx +2fy+c=0                                     ");
+gotoxy(10,20);
+cprintf("                                                                               ");
+
+st:
+ch=getch();
+if(ch==key[1])
+{if(l!=2)
+l+=1;
+else
+l=0;
+display2(l);
+}
+else if(ch==key[2])
+{
+switch(l)
+{case 1:circle();
+	break;
+ case 2:circle2();
+	break;
+}}
+else goto st;
+}
+
+ void display3(int l)
+{
+bar(8,0,70,10,0);
+bar(17,0,70,10,0);
+
+bar(8,0,70,10,0);
+bar(22,0,70,10,0);
+bar(8,5,70,10,0);
+bar(18,5,70,10,0);
+bar(19,0,10,0,0);
+int col[2]={0,0};
+col[l-1]=2;
+gotoxy(10,20);
+cprintf("                                                                               ");
+
+textcolor(4);
+textbackground(2);
+char ch;
+
+textbackground(col[0]);
+
+gotoxy(10,10);
+cprintf("FORM:1 ");
+textbackground(0);
+textcolor(14);
+cprintf("     (y-k)'=4*r*(x-h)'                                            ");
+textbackground(col[1]);
+gotoxy(10,15);
+cprintf("FORM:2");
+textbackground(0);
+textcolor(14);
+cprintf("      (x-h)'=4*r*(y-k)                                           ");
+st:
+ch=getch();
+if(ch==key[1])
+{if(l!=2)
+l+=1;
+else
+l=0;
+display3(l);
+}
+else if(ch==key[2])
+{
+switch(l)
+{case 1:para1();
+	break;
+ case 2:para2();
+	break;
+}}
+else goto st;
+}
+
+
+
+void display4(int l)
+{
+
+bar(25,4,70,10,0);
+bar(22,0,70,10,0);
+
+int col[4]={0,0,0,0};
+col[l-1]=2;
+gotoxy(10,20);
+cprintf("                                                                               ");
+
+gotoxy(0,15);
+cprintf("                                                                               ");
+
+textcolor(4);
+textbackground(2);
+char ch;
+
+textbackground(col[0]);
+gotoxy(10,8+2);
+cprintf("FORM:1 ");
+textbackground(0);
+textcolor(14);
+cprintf("     y=mx+c                                                                ");
+textbackground(col[1]);
+gotoxy(10,13+2);
+cprintf("FORM2");
+textbackground(0);
+textcolor(14);
+cprintf("      x/a +y/b=1                                           ");
+textbackground(col[2]);
+gotoxy(10,18+2);
+cprintf("FORM3");
+textbackground(0);
+textcolor(14);
+cprintf("      x=x1+rcos@, y=y1+rsin@                                    ");
+textbackground(col[3]);
+gotoxy(10,23+1);
+cprintf("FORM4");
+textbackground(0);
+textcolor(14);
+cprintf("      y-y1=m(x-x1)");
+
+st:
+ch=getch();
+if(ch==key[1])
+{if(l!=4)
+l+=1;
+else
+l=0;
+display4(l);
+}
+else if(ch==key[2])
+{
+switch(l)
+{case 1:line1();
+	break;
+ case 2:line2();
+	break;
+ case 3:line3();
+	break;
+
+ case 4:line4();
+	break;
+}}
+else goto st;
+}
+
+void org()
+{ cc1=2;cc2=14;cc3=15;cc4=13;cc5=14;
+}
+
+void main()
+{
+ textcolor(0);
+   clrscr();
+ textcolor(14);
+	  cprintf("\n\n                    KEYBOARD CONTROLS\n");
+	  cout<<"\n\n\n\n\n\n";
+	  cprintf("                 g ..........HORIZONTOL SCROLL");
+	  cout<<"\n\n\n";
+	  cprintf("                 v ..........VERTICAL SCROLL ");
+	  cout<<"\n\n\n";
+	  cprintf("                 h ..........ENTER,TO BEGIN WRITING\n\r");
+	   textcolor(2);
+	  cprintf("....(after you have typed a value, you have to also press enter)\n ");
+	   textcolor(14);
+	  cout<<"\n\n\n";
+	  cprintf("                 f ..........MOVE TO NEXT MENU BLOCK \n");
+	  cout<<"\n\n\n";
+	  cprintf("                 b ..........BACK TO MAIN MENU \n");
+	   getch();
+	   textcolor(0);
+	  textbackground(0);
+
+	  clrscr();
+
+open(15);
+
+closegraph();
+
+cc1=2;cc2=14;cc3=15;cc4=13;cc5=14;
+make(cc4,cc5);
+
+
+display(2,0);
+
+}
+
+void input(int l)
+{
+int loc[7]={4,7,10,13,16,19,22};
+gotoxy(22,loc[l-1]);
+char ch,ch2;
+st:
+ch=getch();
+if(ch==key[2])
+{cout<<"\a";
+ch2=getch();
+c[l-1]=(int)ch2-48;
+print(c[l-1]);
+input(++l);}
+else if (ch==key[1])
+{if(l==7)
+l=1;
+else
+l++;
+input(l);
+}
+else if(c[0]==0 && c[1]==0 && c[2]==0 && c[3]==0 && c[4]==0 && c[5]==0  && c[6]==0)
+{org();
+ textcolor(0);
+   textbackground(0);
+    clrscr();
+    make(cc4,cc5);
+    display(2,0);
+}
+else if (ch==key[4])
+{
+cc4=c[0];
+cc5=c[1];
+cc2=c[2];
+cc1=c[3];
+cc3=c[4];
+g1=c[5];
+g2=c[6];
+
+   textcolor(0);
+   textbackground(0);
+    clrscr();
+    make(cc4,cc5);
+    display(2,0);
+}
+
+else goto st;
+}
+
+void print(int n)
+{textcolor(14);
+switch(n)
+{ case 0: cprintf("0");
+	  break;
+
+  case 1: cprintf("1");
+	  break;
+  case 2: cprintf("2");
+	  break;
+  case 3: cprintf("3");
+	  break;
+  case 4: cprintf("4");
+	  break;
+  case 5: cprintf("5");
+	  break;
+  case 6: cprintf("6");
+	  break;
+  case 7: cprintf("7");
+	  break;
+  case 8: cprintf("8");
+	  break;
+
+}
+
+}
+void change()
+{
+
+for(int y=1;y<=8;y++)
+{gotoxy(58,1+3*y);
+print(y);}
+for( y=1;y<=7;y++)
+{gotoxy(22,1+3*y);
+print(c[y-1]);}
+
+for( y=1;y<=8;y++)
+bar3(60,3*y,y,20);
+gotoxy(1,4);
+textcolor(14);
+textbackground(0);
+cprintf(" MAIN MENU (MARGIN)");
+cout<<"\n\n\n";
+cprintf(" SIDE MENU (MARGIN)");
+cout<<"\n\n\n";
+cprintf(" MAIN MENU (TEXT)");
+cout<<"\n\n\n";
+cprintf(" SIDE MENU (TEXT)");
+cout<<"\n\n\n";
+cprintf(" HIGHLIGHT");
+cout<<"\n\n\n";
+cprintf("GRAPH COLOR");
+cout<<"\n\n\n";
+cprintf("GRAPH BACKGROUND");
+cout<<"\n\n\n";
+input(1);
+}
+
+
+void open(int n)
+{
+   int gdriver = DETECT, gmode, errorcode;
+   int style, midx, midy;
+
+
+   /* initialize graphics and local variables */
+   initgraph(&gdriver, &gmode, "");
+ //  errorcode = graphresult();
+
+ //  setcolor(14);
+   midx = getmaxx() / 2;
+   midy = getmaxy() / 2;
+   setcolor(0);
+   setbkcolor(n);
+   if(n==15)
+   setcolor(4);
+
+
+
+
+   char ch;
+   settextjustify(CENTER_TEXT, CENTER_TEXT);
+     st:
+	  setbkcolor(n);
+	cleardevice();
+      style=TRIPLEX_FONT;
+	  for(int size = 9;size>=3;size-=1)
+   {
+       cleardevice();
+      settextstyle(style, HORIZ_DIR, size);
+      outtextxy(midx, midy, "GRAPH WEAVER");
+       wait();
+   }
+
+	cleardevice();
+      style=SMALL_FONT;
+	  for( size = 8;size>=1;size-=1)
+   {
+       cleardevice();
+      settextstyle(style, HORIZ_DIR, size);
+      outtextxy(midx, midy, "GRAPH WEAVER");
+       wait();
+   }
+   for( size = 1;size<=8;size++)
+   {
+       cleardevice();
+      settextstyle(style, HORIZ_DIR, size);
+      outtextxy(midx, midy, "GRAPH WEAVER");
+       wait();
+   }
+
+       style=TRIPLEX_FONT;
+   for( size = 3;size<=9;size++)
+   {
+       cleardevice();
+      settextstyle(style, HORIZ_DIR, size);
+      outtextxy(midx, midy, "GRAPH WEAVER");
+       wait();
+   }
+
+if(!kbhit())
+{
+goto st;
+}
+/*
+else if((int)ch<=56)
+{
+n=(int)ch-48;
+goto st;
+}
+else if(ch=='q')
+exit(0);
+else
+closegraph();
+*/
+}
+
+void wait()
+{
+for(long x=-1000;x<3000000;x++)
+{;}
+}
+
+void comment()
+{
+
+clrscr();
+textcolor(2);
+char c[25];
+ofstream flout;
+ifstream fln;
+
+fln.open("comment.txt",ios::in);
+char ch;
+cout<<"\n";
+char x;
+while(fln)
+{fln.get(ch);
+cout<<ch;}
+fln.close();
+
+
+textcolor(14);
+char name[20];
+gets(name);
+flout.open("comment.txt",ios::out|ios::app);
+flout<<name<<"\n";
+flout.close();
+clrscr();
+display(2,0);
+}
+void upper(int l)
+{
+int col[2]={0,0};
+col[l-1]=cc3;
+textbackground(col[0]);
+gotoxy(2,3);
+cprintf("KEYS");
+textbackground(col[1]);
+gotoxy(75,3);
+cprintf("SCALE");
+char ch;
+st:
+ch=getch();
+if(ch==key[0])
+{if(l!=2)
+l+=1;
+else
+l=1;
+upper(l);
+}
+else if(ch==key[2])
+{if(l==1)
+setkey(1);
+else if(l==2)
+textcolor(0);
+textbackground(0);
+clrscr();
+textcolor(14);
+char ch3;
+cprintf("SCALE=");
+print(scale);
+cout<<"\n";
+cprintf("ENTER NEW SCALE(<9) :");
+ch3=getch();
+cout<<ch3;
+scale=(int)ch3-48;
+print(scale);
+getch();
+display(2,0);
+}
+else if(ch==key[3])
+display(2,0);
+else goto st;
+}
+void setkey(int l)
+{
+textbackground(0);
+clrscr();
+textcolor(14);
+	  cout<<"\n\n\n\n\n\n";
+	  cprintf("  HORIZONTOL SCROLL.............");
+	  print2(key[0]);
+	  cout<<"\n\n\n";
+	  cprintf("  VERTICAL SCROLL............. .");
+	  print2(key[1]);
+	  cout<<"\n\n\n";
+	  cprintf(" ENTER,TO BEGIN WRITING....... .");
+	  print2(key[2]);
+	  cout<<"\n\n\n";
+	  cprintf(" MOVE TO NEXT MENU BLOCK .......");
+	  print2(key[3]);
+	  cout<<"\n\n\n";
+	  cprintf("  BACK TO MAIN MENU.............");
+	   print2(key[4]);
+int loc[5]={7,10,13,16,19};
+gotoxy(33,loc[l-1]);
+char ch,ch2;
+st:
+ch=getch();
+if(ch==key[2])
+{cout<<"\a";
+ch2=getch();
+print2(ch2);
+key[l-1]=ch2;
+setkey(++l);}
+else if (ch==key[1])
+{if(l==5)
+l=1;
+else
+l++;
+setkey(l);
+}
+else if(ch==key[4])
+{clrscr();
+display(2,0);}
+else goto st;
+}
+void print2(char ch)
+{
+textcolor(14);
+switch(ch)
+{ case 'a': cprintf("a");
+	    break;
+  case 'b': cprintf("b");
+	    break;
+  case 'c': cprintf("c");
+	    break;
+  case 'd': cprintf("d");
+	    break;
+  case 'e': cprintf("e");
+	    break;
+  case 'f': cprintf("f");
+	    break;
+  case 'g': cprintf("g");
+	    break;
+  case 'h': cprintf("h");
+	    break;
+  case 'i': cprintf("i");
+	    break;
+  case 'j': cprintf("j");
+	    break;
+  case 'k': cprintf("k");
+	    break;
+  case 'l': cprintf("l");
+	    break;
+  case 'm': cprintf("m");
+	    break;
+  case 'n': cprintf("n");
+	    break;
+  case 'o': cprintf("o");
+	    break;
+  case 'p': cprintf("p");
+	    break;
+  case 'q': cprintf("q");
+	    break;
+  case 'r': cprintf("r");
+	    break;
+  case 's': cprintf("s");
+	    break;
+  case 't': cprintf("t");
+	    break;
+  case 'u': cprintf("u");
+	    break;
+  case 'v': cprintf("v");
+	    break;
+  case 'w': cprintf("w");
+	    break;
+  case 'x': cprintf("x");
+	    break;
+  case 'y': cprintf("y");
+	    break;
+ case 'z': cprintf("z");
+	    break;
+  default :cprintf("ab");
+ }
+
+	    }
